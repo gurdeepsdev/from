@@ -51,18 +51,32 @@ export const phoneAuth = (phone, countryCode) => {
   
 
   export const verifyOTP = (phone, otp, countryCode) => {
-    if (!OTPlessSignin) return console.error("OTPless not initialized.");
-    OTPlessSignin.verify({
-      channel: "PHONE",  // Set the channel to PHONE
-      phone,
-      otp,
-      countryCode,
-    }).then(response => {
-      if (response.status === "SUCCESS") {
-        console.log("OTP verified successfully.");
+    return new Promise((resolve, reject) => {
+      if (!OTPlessSignin) {
+        console.error("OTPless not initialized.");
+        reject("OTPless not initialized.");
+        return;
       }
-    }).catch(error => {
-      console.error("Error verifying OTP:", error);
+  
+      OTPlessSignin.verify({
+        channel: "PHONE", // Set the channel to PHONE
+        phone,
+        otp,
+        countryCode,
+      })
+        .then(response => {
+          if (response.status === "SUCCESS") {
+            console.log("OTP verified successfully.");
+            resolve(true); // Return success
+          } else {
+            console.error("OTP verification failed.");
+            resolve(false); // Return failure
+          }
+        })
+        .catch(error => {
+          console.error("Error verifying OTP:", error);
+          reject(error);
+        });
     });
   };
   

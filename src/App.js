@@ -35,18 +35,24 @@ useEffect(() => {
     phoneAuth(formData.phone, "+91"); // Dynamic values
   };
   console.log(formData.phone)
-  const handleVerifyOTP = (e) => {
+  const handleVerifyOTP = async (e) => {
     e.preventDefault();
-    const isVerified = verifyOTP(formData.phone, otp, "+91");
-    if (isVerified) {
-      setCurrentStep(3);
-      setShowOTPForm(false);
-      setShowThankYou(true);
-      alert("OTP Verified Successfully!");
-    } else {
-      alert("Wrong OTP. Please try again.");
+    try {
+      const isVerified = await verifyOTP(formData.phone, otp, "+91");
+      if (isVerified) {
+        setCurrentStep(3);
+        setShowOTPForm(false);
+        setShowThankYou(true);
+        alert("OTP Verified Successfully!");
+      } else {
+        alert("Wrong OTP. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error during OTP verification:", error);
+      alert("An error occurred while verifying OTP. Please try again later.");
     }
   };
+  
   
   console.log('new',otp)  
   // Validate form fields
