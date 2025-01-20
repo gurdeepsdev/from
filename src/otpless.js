@@ -50,33 +50,18 @@ export const phoneAuth = (phone, countryCode) => {
   };
   
 
-  // export const verifyOTP = (phone, otp, countryCode) => {
-  //   if (!OTPlessSignin) return console.error("OTPless not initialized.");
-  //   OTPlessSignin.verify({
-  //     channel: "PHONE",  // Set the channel to PHONE
-  //     phone,
-  //     otp,
-  //     countryCode,
-  //   }).then(response => {
-  //     if (response.status === "SUCCESS") {
-  //       console.log("OTP verified successfully.");
-  //     }
-  //   }).catch(error => {
-  //     console.error("Error verifying OTP:", error);
-  //   });
-  // };
-  export async function verify(phone,otp) {
-
-    const verify = await hitOTPlessSdk({
-      requestType: "verify",
-      request: {
-        channel: "PHONE",
-        phone: phone,
-        otp: otp,
-        countryCode: "+91",
-      },
-    },  
-    );
-  
-    console.log({ verify });
-  }
+  export const verifyOTP = (phone, otp, countryCode) => {
+    if (!OTPlessSignin) return console.error("OTPless not initialized.");
+    OTPlessSignin.verify({
+      channel: "PHONE",  // Set the channel to PHONE
+      phone:phone,
+      otp:otp,
+      countryCode:"+91",
+    }).then(response => {
+      if (response.status === "SUCCESS") {
+        console.log("OTP verified successfully.");
+      }
+    }).catch(error => {
+      console.error("Error verifying OTP:", error);
+    });
+  };
