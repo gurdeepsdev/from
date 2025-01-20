@@ -34,6 +34,7 @@ function LoanForm() {
   console.log(formData.phone)
   const handleVerifyOTP = async (e) => {
     e.preventDefault();
+    verifyOTP(formData.phone,otp);
     try {
       const isVerified = await verifyOTP(formData.phone, otp, "+91");
       if (isVerified) {
