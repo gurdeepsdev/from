@@ -50,20 +50,41 @@ export const phoneAuth = (phone, countryCode) => {
   };
   
 
-  export const verifyOTP = (phone, otp, countryCode) => {
+  // export const verifyOTP = (phone, otp, countryCode) => {
+  //   if (!OTPlessSignin) return console.error("OTPless not initialized.");
+  //   OTPlessSignin.verify({
+  //     channel: "PHONE",  // Set the channel to PHONE
+  //     phone:phone,
+  //     otp:otp,
+  //     countryCode:"+91",
+  //   }).then(response => {
+  //     console.log(response.success);
+  //     if (response.success == "true") {
+  //       console.log("OTP verified successfully.");
+  //     }
+  //   }).catch(error => {
+  //     console.error("Error verifying OTP:", error);
+  //   });
+  // };
+ 
+  export const verifyOTP = (phone, otp, countryCode, onSuccess) => {
     if (!OTPlessSignin) return console.error("OTPless not initialized.");
+    
     OTPlessSignin.verify({
       channel: "PHONE",  // Set the channel to PHONE
-      phone:phone,
-      otp:otp,
-      countryCode:"+91",
-    }).then(response => {
-      console.log(response.success);
-      if (response.success == "true") {
-        console.log("OTP verified successfully.");
-      }
-    }).catch(error => {
-      console.error("Error verifying OTP:", error);
-    });
+      phone: phone,
+      otp: otp,
+      countryCode: "+91",
+    })
+      .then(response => {
+        console.log(response.success);
+        if (response.success === "true") {
+          console.log("OTP verified successfully.");
+          if (onSuccess) onSuccess(); // Call the success callback
+        }
+      })
+      .catch(error => {
+        console.error("Error verifying OTP:", error);
+      });
   };
- 
+  
