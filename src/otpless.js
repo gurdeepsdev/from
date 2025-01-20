@@ -59,7 +59,7 @@ export const phoneAuth = (phone, countryCode) => {
       countryCode:"+91",
     }).then(response => {
       console.log({ response });
-      if (response.status === "SUCCESS") {
+      if (response.success === "true") {
         console.log("OTP verified successfully.");
       }
     }).catch(error => {
