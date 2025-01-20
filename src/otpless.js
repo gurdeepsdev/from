@@ -80,7 +80,7 @@ export const phoneAuth = (phone, countryCode) => {
         console.log(response.success);
         if (response.success === true) {
           console.log("OTP verified successfully.");
-           onSuccess(); // Call the success callback
+          if (onSuccess) onSuccess(); // Call the success callback
         }
       })
       .catch(error => {
