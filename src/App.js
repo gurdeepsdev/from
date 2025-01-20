@@ -37,10 +37,10 @@ useEffect(() => {
   console.log(formData.phone)
   const handleVerifyOTP = (otp) => {
     verifyOTP(formData.phone, otp, '+91'); // Dynamic values
-    
+
   };
   
-  console.log('hh',otp)  
+  console.log('gg',otp)  
   // Validate form fields
   const isFormValid = () =>
     formData.name.trim() !== "" && formData.phone.trim().length === 10;
