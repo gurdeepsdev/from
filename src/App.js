@@ -126,13 +126,126 @@ function LoanForm() {
 
                   {/* Conditional Rendering */}
                   {showThankYou ? (
-  <div className="lg:col-span-2 bg-white p-4 sm:p-8  rounded-lg text-center">
-    <h2 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6">Thank You!</h2>
-    <p className="text-sm sm:text-base text-gray-700 mb-6">
-      Thank you for your interest. We will get back to you shortly.
-    </p>
+                        <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+                        <div className="max-w-3xl w-full bg-white shadow-lg rounded-lg p-6 lg:p-10">
+                          {/* Header */}
+                          <h1 className="text-lg lg:text-xl font-semibold mb-4 text-gray-700">
+                            Hello Pardeep, you are only a few details away from completing your loan application!
+                          </h1>
+                  
+                          {/* Form Section */}
+                          <div>
+                            <h2 className="text-lg font-medium text-gray-800 mb-4">Please share your financial details</h2>
+                  
+                            <form className="space-y-6">
+                              {/* Row 1 */}
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                  <label className="block text-sm text-gray-600 mb-1">Property Identified?</label>
+                                  <select
+                                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:ring-orange-500 focus:border-orange-500"
+                                  >
+                                    <option value="" disabled selected>
+                                      Please indicate if you have identified the property you wish to purchase
+                                    </option>
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                  </select>
+                                </div>
+                                <div>
+                                  <label className="block text-sm text-gray-600 mb-1">Property Type</label>
+                                  <select
+                                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:ring-orange-500 focus:border-orange-500"
+                                  >
+                                    <option value="" disabled selected>
+                                      Please select the type of property you wish to purchase
+                                    </option>
+                                    <option value="residential">Residential</option>
+                                    <option value="commercial">Commercial</option>
+                                  </select>
+                                </div>
+                              </div>
+                  
+                              {/* Row 2 */}
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                  <label className="block text-sm text-gray-600 mb-1">Estimated Property Value</label>
+                                  <input
+                                    type="text"
+                                    placeholder="Please enter the estimated current market value of your property"
+                                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:ring-orange-500 focus:border-orange-500"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="block text-sm text-gray-600 mb-1">Down Payment Completed?</label>
+                                  <select
+                                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:ring-orange-500 focus:border-orange-500"
+                                  >
+                                    <option value="" disabled selected>
+                                      Please indicate if you have paid your contribution towards the property purchase
+                                    </option>
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                  </select>
+                                </div>
+                              </div>
+                  
+                              {/* Row 3 */}
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                  <label className="block text-sm text-gray-600 mb-1">Business Vintage</label>
+                                  <select
+                                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:ring-orange-500 focus:border-orange-500"
+                                  >
+                                    <option value="" disabled selected>
+                                      Please select the age of your current business
+                                    </option>
+                                    <option value="1-5 years">1-5 years</option>
+                                    <option value="5+ years">5+ years</option>
+                                  </select>
+                                </div>
+                                <div>
+                                  <label className="block text-sm text-gray-600 mb-1">Nature of Business</label>
+                                  <select
+                                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:ring-orange-500 focus:border-orange-500"
+                                  >
+                                    <option value="" disabled selected>
+                                      Please select your business type
+                                    </option>
+                                    <option value="retail">Retail</option>
+                                    <option value="services">Services</option>
+                                  </select>
+                                </div>
+                              </div>
+                  
+                              {/* Submit Button */}
+                              <button
+                                type="submit"
+                                className="w-full py-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg shadow-md"
+                              >
+                                Submit
+                              </button>
+                            </form>
+                          </div>
+                  
+                          {/* Disclaimer */}
+                          <p className="text-sm text-gray-600 mt-6 text-center">
+                            I authorise Bajaj Housing Finance Limited and its affiliates to contact me, overriding my registration for
+                            DNC/NDNC, if any, and I have understood and agree with the{" "}
+                            <a href="#" className="text-orange-500 underline">
+                              Terms and Conditions
+                            </a>
+                            .
+                          </p>
+                        </div>
+                      </div>
+  // <div className="lg:col-span-2 bg-white p-4 sm:p-8  rounded-lg text-center">
+  //   <h2 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6">Thank You!</h2>
+  //   <p className="text-sm sm:text-base text-gray-700 mb-6">
+  //     Thank you for your interest. We will get back to you shortly.
+  //   </p>
  
-  </div>
+  // </div>
 ) :    showOTPForm ? (
 
       <div className="lg:col-span-2 bg-white p-4 sm:p-8 rounded-lg">
