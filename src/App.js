@@ -1,16 +1,8 @@
-import React, { useState,useEffect } from "react";
-import { initializeOTPless, phoneAuth, verifyOTP } from "./otpless";
+import { useEffect, useState } from 'react'
+import {initiate,oauth,verify} from './otpless'
 
 
 function LoanForm() {
-  useEffect(() => {
-    initializeOTPless();
-  }, []);
-// In your React component
-
-useEffect(() => {
-  initializeOTPless();
-}, []);
 
 
   const [showOTPForm, setShowOTPForm] = useState(false);
@@ -29,24 +21,24 @@ useEffect(() => {
 
   });
   const [otp, setOtp] = useState("");
+  const [phone, setPhone] = useState("");
+
   const handlePhoneAuth = () => {
     setShowOTPForm(true);
     setCurrentStep(2); // Move to OTP step
-    phoneAuth(formData.phone, "+91"); // Dynamic values
   };
   console.log(formData.phone)
   const handleVerifyOTP = async (e) => {
     e.preventDefault();
     try {
-      const isVerified = await verifyOTP(formData.phone, otp, "+91");
-      if (isVerified) {
+      
         setCurrentStep(3);
         setShowOTPForm(false);
         setShowThankYou(true);
         alert("OTP Verified Successfully!");
-      } else {
+    
         alert("Wrong OTP. Please try again.");
-      }
+      
     } catch (error) {
       console.error("Error during OTP verification:", error);
       alert("An error occurred while verifying OTP. Please try again later.");
@@ -151,7 +143,7 @@ useEffect(() => {
               <div className="text-center mb-6">
                 <span className="text-4xl">🔒</span>
               </div>
-              <form className="space-y-4" onSubmit={handleVerifyOTP}>
+              <form className="space-y-4" onSubmit={() => verify(phone,otp)}>
                 <div className="flex justify-center space-x-2">
                   {Array(4)
                     .fill("")
@@ -161,12 +153,7 @@ useEffect(() => {
                         type="text"
                         maxLength="1"
                         value={otp[index] || ""}
-                        onChange={(e) => {
-                          const value = e.target.value.replace(/\D/g, "");
-                          setOtp((prevOtp) =>
-                            prevOtp.slice(0, index) + value + prevOtp.slice(index + 1)
-                          );
-                        }}
+                        onChange={(e) => setOtp(e.target.value)}
                         className="border border-gray-300 rounded-md w-12 h-12 text-center text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     ))}
@@ -236,10 +223,8 @@ useEffect(() => {
                 placeholder="Please enter your 10-digit phone number"
              
 
-                value={formData.phone}
-                onChange={(e) =>
-                  setFormData({ ...formData, phone: e.target.value })
-                }
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
                 className="border border-gray-300 rounded-md w-full py-2 px-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -378,8 +363,8 @@ useEffect(() => {
               <button
                 type="submit"
                 className="w-full bg-orange-500 text-white font-bold py-2 px-4 text-sm sm:text-base rounded-lg hover:bg-orange-600"
-             onClick={handlePhoneAuth}
-             >
+                onClick={()=>{initiate(phone) }}       
+                        >
                 Generate OTP
               </button>
             </div>
