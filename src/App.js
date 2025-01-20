@@ -35,7 +35,8 @@ useEffect(() => {
     phoneAuth(formData.phone, "+91"); // Dynamic values
   };
   console.log(formData.phone)
-  const handleVerifyOTP = () => {
+  const handleVerifyOTP = (e) => {
+    e.preventDefault();
     const isVerified = verifyOTP(formData.phone, otp, "+91");
     if (isVerified) {
       setCurrentStep(3);
@@ -52,17 +53,17 @@ useEffect(() => {
   const isFormValid = () =>
     formData.name.trim() !== "" && formData.phone.trim().length === 10;
 
-  const handleGenerateOTP = (e) => {
-    e.preventDefault();
+  // const handleGenerateOTP = (e) => {
+  //   e.preventDefault();
 
-    if (isFormValid()) {
-      setShowOTPForm(true);
+  //   if (isFormValid()) {
+  //     setShowOTPForm(true);
 
-      setCurrentStep(2); // Move to OTP step
-    } else {
-      alert("Please fill out all required fields.");
-    }
-  };
+  //     setCurrentStep(2); // Move to OTP step
+  //   } else {
+  //     alert("Please fill out all required fields.");
+  //   }
+  // };
 
   // const handleVerifyOTP = (e) => {
   //   e.preventDefault();
