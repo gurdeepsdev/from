@@ -34,20 +34,17 @@ function LoanForm() {
   console.log(formData.phone)
   const handleVerifyOTP = async (e) => {
     e.preventDefault();
-    verifyOTP(formData.phone,otp,handleOTPVerificationSuccess);
-    try {
-   
-    } catch (error) {
-      console.error("Error during OTP verification:", error);
-      alert("An error occurred while verifying OTP. Please try again later.");
-    }
+    console.log("Calling verifyOTP...");
+    verifyOTP(formData.phone, otp, "+91", handleOTPVerificationSuccess);
   };
   
   const handleOTPVerificationSuccess = () => {
+    console.log("OTP verified callback triggered!");
     setCurrentStep(3);
     setShowOTPForm(false);
     setShowThankYou(true);
   };
+  
   console.log('new',otp)  
   // Validate form fields
   const isFormValid = () =>

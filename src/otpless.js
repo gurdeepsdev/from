@@ -68,19 +68,24 @@ export const phoneAuth = (phone, countryCode) => {
   // };
  
   export const verifyOTP = (phone, otp, countryCode, onSuccess) => {
-    if (!OTPlessSignin) return console.error("OTPless not initialized.");
-    
+    if (!OTPlessSignin) {
+      console.error("OTPless not initialized.");
+      return;
+    }
+  
     OTPlessSignin.verify({
-      channel: "PHONE",  // Set the channel to PHONE
+      channel: "PHONE",
       phone: phone,
       otp: otp,
-      countryCode: "+91",
+      countryCode: countryCode,
     })
       .then(response => {
-        console.log(response.success);
+        console.log("Full verifyOTP response:", response);
         if (response.success === true) {
           console.log("OTP verified successfully.");
-          if (onSuccess) onSuccess(); // Call the success callback
+          if (onSuccess) onSuccess();
+        } else {
+          console.warn("OTP verification failed:", response);
         }
       })
       .catch(error => {
