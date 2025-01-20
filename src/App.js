@@ -118,7 +118,7 @@ useEffect(() => {
 
                   {/* Conditional Rendering */}
                   {showThankYou ? (
-  <div className="lg:col-span-2 bg-white p-4 sm:p-8 rounded-lg text-center">
+  <div className="lg:col-span-2 bg-white  px-4 py-12 lg:py-16 md:py-14 rounded-lg text-center">
     <h2 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6">Thank You!</h2>
     <p className="text-sm sm:text-base text-gray-700 mb-6">
       Thank you for your interest. We will get back to you shortly.
@@ -127,7 +127,7 @@ useEffect(() => {
   </div>
 ) :    showOTPForm ? (
 
-      <div className="lg:col-span-2 bg-white p-4 sm:p-8 rounded-lg">
+      <div className="lg:col-span-2 bg-white px-4 py-12 lg:py-16 md:py-14 rounded-lg">
               <h2 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6">
                 Enter your One Time Password (OTP)
               </h2>
