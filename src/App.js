@@ -12,7 +12,9 @@ function LoanForm() {
 
   const [showOTPForm, setShowOTPForm] = useState(false);
   const [showThankYou, setShowThankYou] = useState(false); // New state for Thank You section
+  const [showThankYoufinal, setshowThankYoufinal] = useState(false);
 
+  
   const [currentStep, setCurrentStep] = useState(1); // Track the current step
   const [status, setStatus] = useState('');
   const [formData, setFormData] = useState({
@@ -43,6 +45,14 @@ function LoanForm() {
     setCurrentStep(3);
     setShowOTPForm(false);
     setShowThankYou(true);
+  };
+
+  const handelThankyou = () => {
+    setCurrentStep(4);
+    setShowOTPForm(false);
+    setShowThankYou(false);
+  setshowThankYoufinal(true)
+
   };
   
   console.log('new',otp)  
@@ -126,8 +136,8 @@ function LoanForm() {
 
                   {/* Conditional Rendering */}
                   {showThankYou ? (
-                        <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-                        <div className="max-w-3xl w-full bg-white shadow-lg rounded-lg p-6 lg:p-10">
+  <div className="lg:col-span-2 bg-white   rounded-lg text-center">
+  <div className="max-w-3xl w-full bg-white shadow-lg rounded-lg p-6 lg:p-10">
                           {/* Header */}
                           <h1 className="text-lg lg:text-xl font-semibold mb-4 text-gray-700">
                             Hello Pardeep, you are only a few details away from completing your loan application!
@@ -222,6 +232,7 @@ function LoanForm() {
                               <button
                                 type="submit"
                                 className="w-full py-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg shadow-md"
+                                onClick={handelThankyou}
                               >
                                 Submit
                               </button>
@@ -308,7 +319,15 @@ function LoanForm() {
                 </button>
               </form>
             </div>
-             ) : (
+             )  :    showThankYoufinal ? (
+                <div className="lg:col-span-2 bg-white p-4 sm:p-8  rounded-lg text-center">
+    <h2 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6">Thank You!</h2>
+    <p className="text-sm sm:text-base text-gray-700 mb-6">
+      Thank you for your interest. We will get back to you shortly.
+    </p>
+ 
+  </div>
+             ):(
         <div className="lg:col-span-2 bg-white p-4 sm:p-8 rounded-lg">
           <h2 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6">
             Please share your basic details
@@ -489,6 +508,7 @@ function LoanForm() {
             </div>
           </form>
         </div>
+
  )}
 
 
