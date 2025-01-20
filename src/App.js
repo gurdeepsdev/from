@@ -37,9 +37,10 @@ useEffect(() => {
   console.log(formData.phone)
   const handleVerifyOTP = (otp) => {
     verifyOTP(formData.phone, otp, '+91'); // Dynamic values
+    
   };
   
-  console.log('hh',formData)  
+  console.log('hh',otp)  
   // Validate form fields
   const isFormValid = () =>
     formData.name.trim() !== "" && formData.phone.trim().length === 10;
@@ -109,6 +110,8 @@ useEffect(() => {
   
   return (
     <>
+        <div className="min-h-screen flex flex-col" >
+
         {/* Header */}
         <div className="bg-blue-900 text-white px-6 py-4  flex justify-between items-center">
           <h1 className="text-base sm:text-lg font-semibold">Bajaj Finserv</h1>
@@ -118,7 +121,7 @@ useEffect(() => {
 
                   {/* Conditional Rendering */}
                   {showThankYou ? (
-  <div className="lg:col-span-2 bg-white  px-4 py-12 lg:py-16 md:py-14 rounded-lg text-center">
+  <div className="lg:col-span-2 bg-white p-4 sm:p-8  rounded-lg text-center">
     <h2 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6">Thank You!</h2>
     <p className="text-sm sm:text-base text-gray-700 mb-6">
       Thank you for your interest. We will get back to you shortly.
@@ -127,7 +130,7 @@ useEffect(() => {
   </div>
 ) :    showOTPForm ? (
 
-      <div className="lg:col-span-2 bg-white px-4 py-12 lg:py-16 md:py-14 rounded-lg">
+      <div className="lg:col-span-2 bg-white p-4 sm:p-8 rounded-lg">
               <h2 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6">
                 Enter your One Time Password (OTP)
               </h2>
@@ -421,13 +424,13 @@ useEffect(() => {
       </div>
     </div>
         {/* Tracker Section */}
-        <div className="bg-blue-900 text-white px-4 sm:px-6 py-4 ">
-          <div className="text-center">
-            <p className="text-xs sm:text-sm font-medium">My Tracker</p>
-         
-          </div>
-          {/* {status && <p className="mt-4 text-center">{status}</p>} */}
-
+        <footer className="bg-blue-900 text-white px-4 sm:px-6 py-4 mt-auto">
+        <div className="text-center">
+          <p className="text-xs sm:text-sm font-medium">My Tracker</p>
+        </div>
+        {/* Uncomment the line below if you want to show status messages */}
+        {/* {status && <p className="mt-4 text-center">{status}</p>} */}
+      </footer>
         </div>
     </>
   );
