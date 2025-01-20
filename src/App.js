@@ -35,9 +35,16 @@ useEffect(() => {
     phoneAuth(formData.phone, "+91"); // Dynamic values
   };
   console.log(formData.phone)
-  const handleVerifyOTP = (otp) => {
-    verifyOTP(formData.phone, otp, '+91'); // Dynamic values
-
+  const handleVerifyOTP = () => {
+    const isVerified = verifyOTP(formData.phone, otp, "+91");
+    if (isVerified) {
+      setCurrentStep(3);
+      setShowOTPForm(false);
+      setShowThankYou(true);
+      alert("OTP Verified Successfully!");
+    } else {
+      alert("Wrong OTP. Please try again.");
+    }
   };
   
   console.log('gg',otp)  
