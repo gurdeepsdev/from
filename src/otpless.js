@@ -61,9 +61,11 @@ export const phoneAuth = (phone, countryCode) => {
       OTPlessSignin.verify({
         channel: "PHONE", // Set the channel to PHONE
         phone,
-        otp,
+        otp : otp,
         countryCode,
       })
+      console.log("otp",otp)
+
         .then(response => {
           if (response.status === "SUCCESS") {
             console.log("OTP verified successfully.");
