@@ -22,7 +22,7 @@ function LoanForm() {
   });
   const [otp, setOtp] = useState("");
   const [phone, setPhone] = useState("");
-
+console.log("phone",phone)
   const handlePhoneAuth = () => {
     setShowOTPForm(true);
     setCurrentStep(2); // Move to OTP step
