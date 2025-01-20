@@ -47,7 +47,7 @@ useEffect(() => {
     }
   };
   
-  console.log('gg',otp)  
+  console.log('new',otp)  
   // Validate form fields
   const isFormValid = () =>
     formData.name.trim() !== "" && formData.phone.trim().length === 10;
