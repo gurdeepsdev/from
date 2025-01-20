@@ -78,7 +78,7 @@ export const phoneAuth = (phone, countryCode) => {
     })
       .then(response => {
         console.log(response.success);
-        if (response.success === "true") {
+        if (response.success === true) {
           console.log("OTP verified successfully.");
           if (onSuccess) onSuccess(); // Call the success callback
         }
