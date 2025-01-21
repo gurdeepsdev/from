@@ -793,8 +793,8 @@ const handleOTPSuccess = async (e) => {
         currentStep >= 3 ? "bg-green-500" : "border-2 border-white bg-blue-900"
       } rounded-full flex justify-center items-center text-white text-sm`}
     >
-      {currentStep > 3 ? "✓" : "3"}
-    </span>
+      {currentStep > 3 ? "✓" : currentStep === 3 ? "✓" : "3"}
+      </span>
   </div>
   <p className="ml-4 text-sm">Review Loan Details</p>
 </div>
