@@ -1,5 +1,6 @@
 import React, { useState,useEffect } from "react";
 import { initializeOTPless, phoneAuth, verifyOTP } from "./otpless";
+import Swal from 'sweetalert2';
 
 
 function LoanForm() {
@@ -8,6 +9,7 @@ function LoanForm() {
   }, []);
 // In your React component
 
+const [isCheckboxSelected, setIsCheckboxSelected] = useState(false);
 
 
   const [showOTPForm, setShowOTPForm] = useState(false);
@@ -58,7 +60,9 @@ function LoanForm() {
       isLoanTypeValid &&
       isLoanAmountValid &&
       isPinValid &&
-      isMonthlyIncomeValid
+      isMonthlyIncomeValid &&
+      isCheckboxSelected // Ensure checkbox is selected
+
     );
   };
 
@@ -103,7 +107,11 @@ function LoanForm() {
       setCurrentStep(2); // Move to OTP step
       phoneAuth(formData.phone, "+91"); // Dynamic values
     } else {
-      alert("Please fill out all required fields.");
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Please fill out all required fields.',
+      });
     }
 
   
@@ -120,7 +128,11 @@ function LoanForm() {
     };
   
     const onFailure = () => {
-      alert("Wrong OTP. Please try again."); // Show error alert
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Wrong OTP. Please try again.',
+      });
     };
   
     try {
@@ -128,7 +140,11 @@ function LoanForm() {
       await verifyOTP(formData.phone, otp, "+91", onSuccess, onFailure);
     } catch (error) {
       console.error("Error verifying OTP:", error);
-      alert("An error occurred during OTP verification. Please try again.");
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'An error occurred during OTP verification. Please try again.',
+      });
     } finally {
       setLoading(false); // Hide loader
     }
@@ -187,74 +203,15 @@ const handleOTPSuccess = async (e) => {
       setLoading(false); // Hide loader
     }
   } else {
-    alert("Please fill out all required fields.");
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Please fill out all required fields.',
+    });
   }
 };
 
 
-  // const handleVerifyOTP = async (e) => {
-  //   e.preventDefault();
-  //   console.log("Calling verifyOTP...");
-  //   setShowThankYou(true); 
-
-  //   // verifyOTP(formData.phone, otp, "+91", handleOTPVerificationSuccess);
-  // };
-
-  
-  // const handleOTPVerificationSuccess = async () => {
-  //   console.log("OTP verified callback triggered!");
-  //    setCurrentStep(3);
-  //   setShowOTPForm(false);
-  //   setShowThankYou(true); 
-  
-       
-  // };
-
-  // const handleOTPSuccess = async (e) => {
-  //   e.preventDefault();
-
-  //   console.log("OTP verified callback triggered!");
-  //   if (isFormValid1()) {
-  //     console.log("Form1 is valid, proceed with submission.");
-  //     // Submit form logic here
-    
-  //   const scriptURL ="https://script.google.com/macros/s/AKfycbwO4Xos-ZjyFUXnBFiWL4TDc8YqVuTS57FbtXRVIUuukIuXyV1xRRCLvLAUO3cmSmWHuA/exec"; // Replace with your script URL
-  
-  //   // Combine formData and formData1
-  //   const combinedData = { ...formData, ...formData1 };
-  //   setCurrentStep(3);
-  //   setShowOTPForm(false);
-  //   setShowThankYou(false);
-  // setshowThankYoufinal(true)
-  //   try {
-  //     const response = await fetch(scriptURL, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(combinedData),
-  //       mode: "no-cors", // Prevents CORS issues when sending data to Google Apps Script
-  //     });
-  
-  //     console.log("Combined Data:", combinedData); // Debugging log
-  
-
-  
-  //     // Optional: Handle server response if mode is not 'no-cors'
-  //     // const result = await response.json();
-  //     // if (result.status === 'success') {
-  //     //   setStatus('Form submitted successfully!');
-  //     // } else {
-  //     //   setStatus('Error submitting form.');
-  //     // }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //     setStatus("Error submitting form.");
-  //   }
-  // } else {
-  //   alert("Please fill out all required fields.");
-  // }
-  // };
 
 
 
@@ -266,17 +223,17 @@ const handleOTPSuccess = async (e) => {
   const [countdown, setCountdown] = useState(51); // Initial countdown value
   const [isResendDisabled, setIsResendDisabled] = useState(true); // Disable resend initially
 
-  // useEffect(() => {
-  //   let timer;
-  //   if (countdown > 0) {
-  //     timer = setInterval(() => {
-  //       setCountdown((prev) => prev - 1);
-  //     }, 1000); // Decrease every second
-  //   } else {
-  //     setIsResendDisabled(false); // Enable resend when countdown reaches 0
-  //   }
-  //   return () => clearInterval(timer); // Cleanup timer
-  // }, [countdown]);
+  useEffect(() => {
+    let timer;
+    if (countdown > 0) {
+      timer = setInterval(() => {
+        setCountdown((prev) => prev - 1);
+      }, 1000); // Decrease every second
+    } else {
+      setIsResendDisabled(false); // Enable resend when countdown reaches 0
+    }
+    return () => clearInterval(timer); // Cleanup timer
+  }, [countdown]);
 
   const handleResendClick = () => {
     if (!isResendDisabled) {
@@ -362,9 +319,9 @@ const handleOTPSuccess = async (e) => {
 
         {/* Header */}
         <div className="bg-blue-900 text-white px-6 py-4  flex justify-between items-center">
-          <h1 className="text-base sm:text-lg font-semibold">Bajaj Finserv</h1>
+          <h1 className="text-base sm:text-lg font-semibold">Orbits work</h1>
         </div>
-        <div class="bg-gray-100 flex justify-center items-center px-4 py-12 lg:py-16 md:py-14">
+        <div class="flex justify-center items-center px-4 py-12 lg:py-16 md:py-14">
         <div className="bg-white shadow-lg rounded-lg w-full max-w-6xl grid grid-cols-1 lg:grid-cols-3">
 
                   {/* Conditional Rendering */}
@@ -507,7 +464,7 @@ const handleOTPSuccess = async (e) => {
                   
                           {/* Disclaimer */}
                           <p className="text-sm text-gray-600 mt-6 text-center">
-                            I authorise Bajaj Housing Finance Limited and its affiliates to contact me, overriding my registration for
+                            I authorise Orbits work and its affiliates to contact me, overriding my registration for
                             DNC/NDNC, if any, and I have understood and agree with the{" "}
                             <span
   className="text-orange-500 underline cursor-pointer"
@@ -576,7 +533,7 @@ const handleOTPSuccess = async (e) => {
                   <label className="flex items-start text-xs sm:text-sm">
                     <input type="checkbox" className="h-4 w-4 text-blue-500 mt-1" />
                     <span className="ml-2">
-                      I authorise Bajaj Housing Finance Limited and its affiliates to contact me,
+                      I authorise Orbits work and its affiliates to contact me,
                       overriding my registration for DNC/NDNC, if any, and I have understood and
                       agree with the{" "}
                       <span
@@ -763,9 +720,10 @@ const handleOTPSuccess = async (e) => {
 
             {/* Terms */}
             <div className="col-span-2 flex items-center">
-              <input type="checkbox" className="h-4 w-4 text-blue-500" />
+              <input type="checkbox" className="h-4 w-4 text-blue-500"  checked={isCheckboxSelected}
+  onChange={(e) => setIsCheckboxSelected(e.target.checked)}/>
               <label className="ml-2 text-xs sm:text-sm">
-                I authorise Bajaj Housing Finance Limited and its affiliates to contact me,
+                I authorise Orbits work and its affiliates to contact me,
                 overriding my registration for DNC/NDNC, if any, and I have understood and agree
                 with the{" "}
                 <span
@@ -835,7 +793,7 @@ const handleOTPSuccess = async (e) => {
         currentStep >= 3 ? "bg-green-500" : "border-2 border-white bg-blue-900"
       } rounded-full flex justify-center items-center text-white text-sm`}
     >
-      {currentStep > 3 ? "✓" : currentStep === 3 ? "✓" : "3"}
+      {currentStep > 3 ? "✓" : "3"}
     </span>
   </div>
   <p className="ml-4 text-sm">Review Loan Details</p>
@@ -848,10 +806,9 @@ const handleOTPSuccess = async (e) => {
         {/* Tracker Section */}
         <footer className="bg-blue-900 text-white px-4 sm:px-6 py-4 mt-auto">
         <div className="text-center">
-          <p className="text-xs sm:text-sm font-medium">My Tracker</p>
+          <p className="text-xs sm:text-sm font-medium">Orbits work</p>
         </div>
-        {/* Uncomment the line below if you want to show status messages */}
-        {/* {status && <p className="mt-4 text-center">{status}</p>} */}
+      
       </footer>
         </div>
     </>
