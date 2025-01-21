@@ -71,7 +71,10 @@ function LoanForm() {
   
     // Combine formData and formData1
     const combinedData = { ...formData, ...formData1 };
-  
+    setCurrentStep(3);
+    setShowOTPForm(false);
+    setShowThankYou(false);
+  setshowThankYoufinal(true)
     try {
       const response = await fetch(scriptURL, {
         method: "POST",
@@ -84,10 +87,7 @@ function LoanForm() {
   
       console.log("Combined Data:", combinedData); // Debugging log
   
-      setCurrentStep(3);
-      setShowOTPForm(false);
-      setShowThankYou(false);
-    setshowThankYoufinal(true)
+
   
       // Optional: Handle server response if mode is not 'no-cors'
       // const result = await response.json();
