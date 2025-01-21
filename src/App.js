@@ -39,11 +39,73 @@ function LoanForm() {
 
   console.log(formData1,"newdd")
   const [otp, setOtp] = useState("");
+  const isFormValid = () => {
+    const { name, phone, employment, loan_type, loan_amount, pin, monthly_income } = formData;
+  
+    // Basic validations
+    const isNameValid = name.trim() !== ""; // Name should not be empty
+    const isPhoneValid = /^\d{10}$/.test(phone.trim()); // Phone should be exactly 10 digits
+    const isEmploymentValid = employment.trim() !== ""; // Employment should not be empty
+    const isLoanTypeValid = loan_type.trim() !== ""; // Loan type should not be empty
+    const isLoanAmountValid = /^\d+$/.test(loan_amount.trim()) && parseInt(loan_amount, 10) > 0; // Loan amount should be a positive number
+    const isPinValid = /^\d{6}$/.test(pin.trim()); // Pin should be exactly 6 digits
+    const isMonthlyIncomeValid = /^\d+$/.test(monthly_income.trim()) && parseInt(monthly_income, 10) > 0; // Monthly income should be a positive number
+  
+    // Combine all validations
+    return (
+      isNameValid &&
+      isPhoneValid &&
+      isEmploymentValid &&
+      isLoanTypeValid &&
+      isLoanAmountValid &&
+      isPinValid &&
+      isMonthlyIncomeValid
+    );
+  };
 
+  const isFormValid1 = () => {
+    const {
+      property_Identified,
+      property_type,
+      down_payment,
+      business_vintage,
+      nature_of_business,
+      estimated_property_value,
+    } = formData1;
+  
+    // Dropdown validations (should not be empty)
+    const isPropertyIdentifiedValid = property_Identified.trim() !== "";
+    const isPropertyTypeValid = property_type.trim() !== "";
+    const isDownPaymentValid = down_payment.trim() !== "";
+    const isBusinessVintageValid = business_vintage.trim() !== "";
+    const isNatureOfBusinessValid = nature_of_business.trim() !== "";
+  
+    // Input validation for estimated_property_value (should be a positive number)
+    const isEstimatedPropertyValueValid =
+      /^\d+$/.test(estimated_property_value.trim()) &&
+      parseInt(estimated_property_value, 10) > 0;
+  
+    // Combine all validations
+    return (
+      isPropertyIdentifiedValid &&
+      isPropertyTypeValid &&
+      isDownPaymentValid &&
+      isBusinessVintageValid &&
+      isNatureOfBusinessValid &&
+      isEstimatedPropertyValueValid
+    );
+  };
+  
   const handlePhoneAuth = () => {
-    setShowOTPForm(true);
-    setCurrentStep(2); // Move to OTP step
-    // phoneAuth(formData.phone, "+91"); // Dynamic values
+    if (isFormValid()) {
+      setShowOTPForm(true);
+      setCurrentStep(2); // Move to OTP step
+      // phoneAuth(formData.phone, "+91"); // Dynamic values
+    } else {
+      alert("Please fill out all required fields.");
+    }
+
+  
   };
 
   const handleVerifyOTP = async (e) => {
@@ -66,7 +128,10 @@ function LoanForm() {
 
   const handleOTPSuccess = async () => {
     console.log("OTP verified callback triggered!");
-  
+    if (isFormValid1()) {
+      console.log("Form1 is valid, proceed with submission.");
+      // Submit form logic here
+    
     const scriptURL ="https://script.google.com/macros/s/AKfycbwO4Xos-ZjyFUXnBFiWL4TDc8YqVuTS57FbtXRVIUuukIuXyV1xRRCLvLAUO3cmSmWHuA/exec"; // Replace with your script URL
   
     // Combine formData and formData1
@@ -100,6 +165,9 @@ function LoanForm() {
       console.error("Error:", error);
       setStatus("Error submitting form.");
     }
+  } else {
+    alert("Please fill out all required fields.");
+  }
   };
 
   // const handelThankyou = () => {
@@ -139,8 +207,7 @@ function LoanForm() {
   };
   console.log('new',otp)  
   // Validate form fields
-  const isFormValid = () =>
-    formData.name.trim() !== "" && formData.phone.trim().length === 10;
+
 
   // const handleGenerateOTP = (e) => {
   //   e.preventDefault();
