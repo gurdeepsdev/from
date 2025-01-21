@@ -35,9 +35,6 @@ function LoanForm() {
     business_vintage:"",
     nature_of_business:"",
     estimated_property_value:"",
-    
-
-
   });
 
   console.log(formData1,"newdd")
@@ -70,8 +67,7 @@ function LoanForm() {
   const handleOTPSuccess = async () => {
     console.log("OTP verified callback triggered!");
   
-    const scriptURL =
-      "  https://script.google.com/macros/s/AKfycbwO4Xos-ZjyFUXnBFiWL4TDc8YqVuTS57FbtXRVIUuukIuXyV1xRRCLvLAUO3cmSmWHuA/exec"; // Replace with your script URL
+    const scriptURL ="https://script.google.com/macros/s/AKfycbwO4Xos-ZjyFUXnBFiWL4TDc8YqVuTS57FbtXRVIUuukIuXyV1xRRCLvLAUO3cmSmWHuA/exec"; // Replace with your script URL
   
     // Combine formData and formData1
     const combinedData = { ...formData, ...formData1 };
