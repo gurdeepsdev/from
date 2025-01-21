@@ -34,7 +34,8 @@ function LoanForm() {
     down_payment:"",
     business_vintage:"",
     nature_of_business:"",
-    estimated_property_value:""
+    estimated_property_value:"",
+    phone:""
 
 
   });
