@@ -37,7 +37,6 @@ function LoanForm() {
     estimated_property_value:"",
   });
 
-  console.log(formData1,"newdd")
   const [otp, setOtp] = useState("");
   const isFormValid = () => {
     const { name, phone, employment, loan_type, loan_amount, pin, monthly_income } = formData;
@@ -114,16 +113,13 @@ function LoanForm() {
 
   const handleVerifyOTP = async (e) => {
     e.preventDefault();
-    console.log("Calling verifyOTP...");
     setLoading(true); // Show loader
   
     const onSuccess = () => {
-      console.log("OTP verified successfully!");
       handleOTPVerificationSuccess(); // Call success handler
     };
   
     const onFailure = () => {
-      console.error("OTP verification failed!");
       alert("Wrong OTP. Please try again."); // Show error alert
     };
   
@@ -139,7 +135,6 @@ function LoanForm() {
   };
   
   const handleOTPVerificationSuccess = async () => {
-    console.log("OTP verified callback triggered!");
     setLoading(true); // Show loader
     try {
       setCurrentStep(3); // Proceed to the next step
@@ -155,9 +150,7 @@ function LoanForm() {
 
 const handleOTPSuccess = async (e) => {
   e.preventDefault();
-  console.log("OTP verified callback triggered!");
   if (isFormValid1()) {
-    console.log("Form1 is valid, proceed with submission.");
     setLoading(true); // Show loader
     const scriptURL =
       "https://script.google.com/macros/s/AKfycbwO4Xos-ZjyFUXnBFiWL4TDc8YqVuTS57FbtXRVIUuukIuXyV1xRRCLvLAUO3cmSmWHuA/exec"; // Replace with your script URL
@@ -175,7 +168,6 @@ const handleOTPSuccess = async (e) => {
         mode: "no-cors", // Prevents CORS issues when sending data to Google Apps Script
       });
 
-      console.log("Combined Data:", combinedData); // Debugging log
       setCurrentStep(3);
       setShowOTPForm(false);
       setShowThankYou(false);
@@ -293,7 +285,6 @@ const handleOTPSuccess = async (e) => {
       handlePhoneAuth(); // Call the resend OTP function
     }
   };
-  console.log('new',otp)  
   // Validate form fields
 
 
