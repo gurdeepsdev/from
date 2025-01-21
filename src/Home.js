@@ -393,7 +393,7 @@ const handleOTPSuccess = async (e) => {
   <div className="max-w-3xl w-full bg-white shadow-lg rounded-lg p-6 lg:p-10">
                           {/* Header */}
                           <h1 className="text-lg lg:text-xl font-semibold mb-4 text-gray-700">
-                            Hello Pardeep, you are only a few details away from completing your loan application!
+                            Hello {formData.name}, you are only a few details away from completing your loan application!
                           </h1>
                   
                           {/* Form Section */}
