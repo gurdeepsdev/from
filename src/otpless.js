@@ -67,7 +67,7 @@ export const phoneAuth = (phone, countryCode) => {
   //   });
   // };
  
-  export const verifyOTP = (phone, otp, countryCode, onSuccess) => {
+  export const verifyOTP = (phone, otp, countryCode, onSuccess, onFailure) => {
     if (!OTPlessSignin) {
       console.error("OTPless not initialized.");
       return;
@@ -86,10 +86,13 @@ export const phoneAuth = (phone, countryCode) => {
           if (onSuccess) onSuccess();
         } else {
           console.warn("OTP verification failed:", response);
+          if (onFailure) onFailure(); // Call the onFailure callback
         }
       })
       .catch(error => {
         console.error("Error verifying OTP:", error);
+        if (onFailure) onFailure(); // Call the onFailure callback
       });
   };
+  
   

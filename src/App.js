@@ -96,11 +96,13 @@ function LoanForm() {
     );
   };
   
-  const handlePhoneAuth = () => {
+  const handlePhoneAuth = (e) => {
+    e.preventDefault();
+
     if (isFormValid()) {
       setShowOTPForm(true);
       setCurrentStep(2); // Move to OTP step
-      // phoneAuth(formData.phone, "+91"); // Dynamic values
+      phoneAuth(formData.phone, "+91"); // Dynamic values
     } else {
       alert("Please fill out all required fields.");
     }
@@ -108,38 +110,61 @@ function LoanForm() {
   
   };
 
+  const [loading, setLoading] = useState(false); // Loader state
+
   const handleVerifyOTP = async (e) => {
     e.preventDefault();
     console.log("Calling verifyOTP...");
-    setShowThankYou(true); 
-
-    // verifyOTP(formData.phone, otp, "+91", handleOTPVerificationSuccess);
+    setLoading(true); // Show loader
+  
+    const onSuccess = () => {
+      console.log("OTP verified successfully!");
+      handleOTPVerificationSuccess(); // Call success handler
+    };
+  
+    const onFailure = () => {
+      console.error("OTP verification failed!");
+      alert("Wrong OTP. Please try again."); // Show error alert
+    };
+  
+    try {
+      // Call OTP verification logic
+      await verifyOTP(formData.phone, otp, "+91", onSuccess, onFailure);
+    } catch (error) {
+      console.error("Error verifying OTP:", error);
+      alert("An error occurred during OTP verification. Please try again.");
+    } finally {
+      setLoading(false); // Hide loader
+    }
   };
-
   
   const handleOTPVerificationSuccess = async () => {
     console.log("OTP verified callback triggered!");
-     setCurrentStep(3);
-    setShowOTPForm(false);
-    setShowThankYou(true); 
-  
-       
+    setLoading(true); // Show loader
+    try {
+      setCurrentStep(3); // Proceed to the next step
+      setShowOTPForm(false); // Hide OTP form
+      setShowThankYou(true); // Show Thank You message
+    } catch (error) {
+      console.error("Error handling OTP success:", error);
+    } finally {
+      setLoading(false); // Hide loader
+    }
   };
-
-  const handleOTPSuccess = async () => {
-    console.log("OTP verified callback triggered!");
-    if (isFormValid1()) {
-      console.log("Form1 is valid, proceed with submission.");
-      // Submit form logic here
-    
-    const scriptURL ="https://script.google.com/macros/s/AKfycbwO4Xos-ZjyFUXnBFiWL4TDc8YqVuTS57FbtXRVIUuukIuXyV1xRRCLvLAUO3cmSmWHuA/exec"; // Replace with your script URL
   
+
+const handleOTPSuccess = async (e) => {
+  e.preventDefault();
+  console.log("OTP verified callback triggered!");
+  if (isFormValid1()) {
+    console.log("Form1 is valid, proceed with submission.");
+    setLoading(true); // Show loader
+    const scriptURL =
+      "https://script.google.com/macros/s/AKfycbwO4Xos-ZjyFUXnBFiWL4TDc8YqVuTS57FbtXRVIUuukIuXyV1xRRCLvLAUO3cmSmWHuA/exec"; // Replace with your script URL
+
     // Combine formData and formData1
     const combinedData = { ...formData, ...formData1 };
-    setCurrentStep(3);
-    setShowOTPForm(false);
-    setShowThankYou(false);
-  setshowThankYoufinal(true)
+
     try {
       const response = await fetch(scriptURL, {
         method: "POST",
@@ -149,11 +174,13 @@ function LoanForm() {
         body: JSON.stringify(combinedData),
         mode: "no-cors", // Prevents CORS issues when sending data to Google Apps Script
       });
-  
-      console.log("Combined Data:", combinedData); // Debugging log
-  
 
-  
+      console.log("Combined Data:", combinedData); // Debugging log
+      setCurrentStep(3);
+      setShowOTPForm(false);
+      setShowThankYou(false);
+      setshowThankYoufinal(true);
+
       // Optional: Handle server response if mode is not 'no-cors'
       // const result = await response.json();
       // if (result.status === 'success') {
@@ -162,21 +189,82 @@ function LoanForm() {
       //   setStatus('Error submitting form.');
       // }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error submitting form:", error);
       setStatus("Error submitting form.");
+    } finally {
+      setLoading(false); // Hide loader
     }
   } else {
     alert("Please fill out all required fields.");
   }
-  };
+};
 
-  // const handelThankyou = () => {
+
+  // const handleVerifyOTP = async (e) => {
+  //   e.preventDefault();
+  //   console.log("Calling verifyOTP...");
+  //   setShowThankYou(true); 
+
+  //   // verifyOTP(formData.phone, otp, "+91", handleOTPVerificationSuccess);
+  // };
+
+  
+  // const handleOTPVerificationSuccess = async () => {
+  //   console.log("OTP verified callback triggered!");
+  //    setCurrentStep(3);
+  //   setShowOTPForm(false);
+  //   setShowThankYou(true); 
+  
+       
+  // };
+
+  // const handleOTPSuccess = async (e) => {
+  //   e.preventDefault();
+
+  //   console.log("OTP verified callback triggered!");
+  //   if (isFormValid1()) {
+  //     console.log("Form1 is valid, proceed with submission.");
+  //     // Submit form logic here
+    
+  //   const scriptURL ="https://script.google.com/macros/s/AKfycbwO4Xos-ZjyFUXnBFiWL4TDc8YqVuTS57FbtXRVIUuukIuXyV1xRRCLvLAUO3cmSmWHuA/exec"; // Replace with your script URL
+  
+  //   // Combine formData and formData1
+  //   const combinedData = { ...formData, ...formData1 };
   //   setCurrentStep(3);
   //   setShowOTPForm(false);
   //   setShowThankYou(false);
   // setshowThankYoufinal(true)
+  //   try {
+  //     const response = await fetch(scriptURL, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(combinedData),
+  //       mode: "no-cors", // Prevents CORS issues when sending data to Google Apps Script
+  //     });
+  
+  //     console.log("Combined Data:", combinedData); // Debugging log
+  
 
+  
+  //     // Optional: Handle server response if mode is not 'no-cors'
+  //     // const result = await response.json();
+  //     // if (result.status === 'success') {
+  //     //   setStatus('Form submitted successfully!');
+  //     // } else {
+  //     //   setStatus('Error submitting form.');
+  //     // }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //     setStatus("Error submitting form.");
+  //   }
+  // } else {
+  //   alert("Please fill out all required fields.");
+  // }
   // };
+
+
 
   const handleChangenumber = () => {
     setShowOTPForm(false);
@@ -275,6 +363,11 @@ function LoanForm() {
   return (
     <>
         <div className="min-h-screen flex flex-col" >
+        {loading && (
+  <div className="flex justify-center items-center fixed inset-0 bg-gray-900 bg-opacity-50 z-50">
+    <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+  </div>
+)}
 
         {/* Header */}
         <div className="bg-blue-900 text-white px-6 py-4  flex justify-between items-center">
