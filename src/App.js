@@ -17,6 +17,8 @@ function LoanForm() {
   
   const [currentStep, setCurrentStep] = useState(1); // Track the current step
   const [status, setStatus] = useState('');
+  const [phonee, setMobile] = useState(formData.phone);
+
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -35,7 +37,7 @@ function LoanForm() {
     business_vintage:"",
     nature_of_business:"",
     estimated_property_value:"",
-    phone:""
+    phonee:""
 
 
   });
