@@ -17,7 +17,6 @@ function LoanForm() {
   
   const [currentStep, setCurrentStep] = useState(1); // Track the current step
   const [status, setStatus] = useState('');
-  const [phonee, setMobile] = useState(formData.phone);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -29,7 +28,6 @@ function LoanForm() {
     monthly_income:""
 
   });
-
   const [formData1, setFormData1] = useState({
     property_Identified: "",
     property_type: "",
@@ -37,7 +35,7 @@ function LoanForm() {
     business_vintage:"",
     nature_of_business:"",
     estimated_property_value:"",
-    phonee:""
+    
 
 
   });
@@ -62,43 +60,59 @@ function LoanForm() {
   
   const handleOTPVerificationSuccess = async () => {
     console.log("OTP verified callback triggered!");
-   
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwYdzq9FN_ZTniUoP9IeRw17XdLc7feO6s7FNd8wboB4qo8e-haRPGPGE-_p2cOd6NH/exec'; // Replace with your script URL
-
-        try {
-          const response = await fetch(scriptURL, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-            mode: 'no-cors',
-    
-          });
-    console.log('hh',formData)      // Move to OTP step
-    setCurrentStep(3);
+     setCurrentStep(3);
     setShowOTPForm(false);
     setShowThankYou(true); 
-          const result = await response.json();
-          if (result.status === 'success') {
-            setStatus('Form submitted successfully!');
-            setFormData({ name: '', email: ''});
-          } else {
-            setStatus('Error submitting form.');
-          }
-        } catch (error) {
-          console.error('Error:', error);
-          setStatus('Error submitting form.');
-        }
+  
+       
   };
 
-  const handelThankyou = () => {
-    setCurrentStep(3);
-    setShowOTPForm(false);
-    setShowThankYou(false);
-  setshowThankYoufinal(true)
-
+  const handleOTPSuccess = async () => {
+    console.log("OTP verified callback triggered!");
+  
+    const scriptURL =
+      "  https://script.google.com/macros/s/AKfycbwO4Xos-ZjyFUXnBFiWL4TDc8YqVuTS57FbtXRVIUuukIuXyV1xRRCLvLAUO3cmSmWHuA/exec"; // Replace with your script URL
+  
+    // Combine formData and formData1
+    const combinedData = { ...formData, ...formData1 };
+  
+    try {
+      const response = await fetch(scriptURL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(combinedData),
+        mode: "no-cors", // Prevents CORS issues when sending data to Google Apps Script
+      });
+  
+      console.log("Combined Data:", combinedData); // Debugging log
+  
+      setCurrentStep(3);
+      setShowOTPForm(false);
+      setShowThankYou(false);
+    setshowThankYoufinal(true)
+  
+      // Optional: Handle server response if mode is not 'no-cors'
+      // const result = await response.json();
+      // if (result.status === 'success') {
+      //   setStatus('Form submitted successfully!');
+      // } else {
+      //   setStatus('Error submitting form.');
+      // }
+    } catch (error) {
+      console.error("Error:", error);
+      setStatus("Error submitting form.");
+    }
   };
+
+  // const handelThankyou = () => {
+  //   setCurrentStep(3);
+  //   setShowOTPForm(false);
+  //   setShowThankYou(false);
+  // setshowThankYoufinal(true)
+
+  // };
 
   const handleChangenumber = () => {
     setShowOTPForm(false);
@@ -337,7 +351,7 @@ function LoanForm() {
                               <button
                                 type="submit"
                                 className="w-full py-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg shadow-md"
-                                onClick={handelThankyou}
+                                onClick={handleOTPSuccess}
                               >
                                 Submit
                               </button>
