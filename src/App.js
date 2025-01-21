@@ -104,17 +104,17 @@ function LoanForm() {
   const [countdown, setCountdown] = useState(51); // Initial countdown value
   const [isResendDisabled, setIsResendDisabled] = useState(true); // Disable resend initially
 
-  useEffect(() => {
-    let timer;
-    if (countdown > 0) {
-      timer = setInterval(() => {
-        setCountdown((prev) => prev - 1);
-      }, 1000); // Decrease every second
-    } else {
-      setIsResendDisabled(false); // Enable resend when countdown reaches 0
-    }
-    return () => clearInterval(timer); // Cleanup timer
-  }, [countdown]);
+  // useEffect(() => {
+  //   let timer;
+  //   if (countdown > 0) {
+  //     timer = setInterval(() => {
+  //       setCountdown((prev) => prev - 1);
+  //     }, 1000); // Decrease every second
+  //   } else {
+  //     setIsResendDisabled(false); // Enable resend when countdown reaches 0
+  //   }
+  //   return () => clearInterval(timer); // Cleanup timer
+  // }, [countdown]);
 
   const handleResendClick = () => {
     if (!isResendDisabled) {
