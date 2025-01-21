@@ -46,14 +46,15 @@ function LoanForm() {
   const handlePhoneAuth = () => {
     setShowOTPForm(true);
     setCurrentStep(2); // Move to OTP step
-    phoneAuth(formData.phone, "+91"); // Dynamic values
+    // phoneAuth(formData.phone, "+91"); // Dynamic values
   };
 
   const handleVerifyOTP = async (e) => {
     e.preventDefault();
     console.log("Calling verifyOTP...");
+    setShowThankYou(true); 
 
-    verifyOTP(formData.phone, otp, "+91", handleOTPVerificationSuccess);
+    // verifyOTP(formData.phone, otp, "+91", handleOTPVerificationSuccess);
   };
 
   
