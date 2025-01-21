@@ -27,34 +27,101 @@ function LoanForm() {
     monthly_income:""
 
   });
+
+  const [formData1, setFormData1] = useState({
+    property_Identified: "",
+    property_type: "",
+    down_payment:"",
+    business_vintage:"",
+    nature_of_business:"",
+    estimated_property_value:""
+
+
+  });
+
+  console.log(formData1,"newdd")
   const [otp, setOtp] = useState("");
   const handlePhoneAuth = () => {
     setShowOTPForm(true);
     setCurrentStep(2); // Move to OTP step
-    phoneAuth(formData.phone, "+91"); // Dynamic values
+    // phoneAuth(formData.phone, "+91"); // Dynamic values
   };
   console.log(formData.phone)
   const handleVerifyOTP = async (e) => {
     e.preventDefault();
     console.log("Calling verifyOTP...");
+    setShowThankYou(true);
+
     verifyOTP(formData.phone, otp, "+91", handleOTPVerificationSuccess);
   };
   
-  const handleOTPVerificationSuccess = () => {
+  const handleOTPVerificationSuccess = async () => {
     console.log("OTP verified callback triggered!");
+   
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwYdzq9FN_ZTniUoP9IeRw17XdLc7feO6s7FNd8wboB4qo8e-haRPGPGE-_p2cOd6NH/exec'; // Replace with your script URL
+
+        try {
+          const response = await fetch(scriptURL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+            mode: 'no-cors',
+    
+          });
+    console.log('hh',formData)      // Move to OTP step
     setCurrentStep(3);
     setShowOTPForm(false);
-    setShowThankYou(true);
+    setShowThankYou(true); 
+          const result = await response.json();
+          if (result.status === 'success') {
+            setStatus('Form submitted successfully!');
+            setFormData({ name: '', email: ''});
+          } else {
+            setStatus('Error submitting form.');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          setStatus('Error submitting form.');
+        }
   };
 
   const handelThankyou = () => {
-    setCurrentStep(4);
+    setCurrentStep(3);
     setShowOTPForm(false);
     setShowThankYou(false);
   setshowThankYoufinal(true)
 
   };
-  
+
+  const handleChangenumber = () => {
+    setShowOTPForm(false);
+    setCurrentStep(1); // Move to OTP step
+
+  };
+  const [countdown, setCountdown] = useState(51); // Initial countdown value
+  const [isResendDisabled, setIsResendDisabled] = useState(true); // Disable resend initially
+
+  useEffect(() => {
+    let timer;
+    if (countdown > 0) {
+      timer = setInterval(() => {
+        setCountdown((prev) => prev - 1);
+      }, 1000); // Decrease every second
+    } else {
+      setIsResendDisabled(false); // Enable resend when countdown reaches 0
+    }
+    return () => clearInterval(timer); // Cleanup timer
+  }, [countdown]);
+
+  const handleResendClick = () => {
+    if (!isResendDisabled) {
+      setIsResendDisabled(true); // Disable resend after click
+      setCountdown(51); // Reset countdown
+      handlePhoneAuth(); // Call the resend OTP function
+    }
+  };
   console.log('new',otp)  
   // Validate form fields
   const isFormValid = () =>
@@ -132,11 +199,11 @@ function LoanForm() {
           <h1 className="text-base sm:text-lg font-semibold">Bajaj Finserv</h1>
         </div>
         <div class="bg-gray-100 flex justify-center items-center px-4 py-12 lg:py-16 md:py-14">
-        <div className="bg-white shadow-lg rounded-lg w-full max-w-6xl grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="bg-white shadow-lg rounded-lg w-full max-w-6xl grid grid-cols-1 lg:grid-cols-3">
 
                   {/* Conditional Rendering */}
                   {showThankYou ? (
-  <div className="lg:col-span-2 bg-white   rounded-lg text-center">
+  <div className="lg:col-span-2 bg-white   rounded-lg">
   <div className="max-w-3xl w-full bg-white shadow-lg rounded-lg p-6 lg:p-10">
                           {/* Header */}
                           <h1 className="text-lg lg:text-xl font-semibold mb-4 text-gray-700">
@@ -153,6 +220,9 @@ function LoanForm() {
                                 <div>
                                   <label className="block text-sm text-gray-600 mb-1">Property Identified?</label>
                                   <select
+                                   value={formData1.property_Identified} // Ensure this binds to the correct state key
+                                   onChange={(e) =>
+                                     setFormData1({ ...formData1, property_Identified: e.target.value })}
                                     className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:ring-orange-500 focus:border-orange-500"
                                   >
                                     <option value="" disabled selected>
@@ -165,13 +235,20 @@ function LoanForm() {
                                 <div>
                                   <label className="block text-sm text-gray-600 mb-1">Property Type</label>
                                   <select
+                                      value={formData1.property_type} // Ensure this binds to the correct state key
+                                      onChange={(e) =>
+                                        setFormData1({ ...formData1, property_type: e.target.value })}
                                     className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:ring-orange-500 focus:border-orange-500"
                                   >
                                     <option value="" disabled selected>
                                       Please select the type of property you wish to purchase
                                     </option>
-                                    <option value="residential">Residential</option>
-                                    <option value="commercial">Commercial</option>
+                                    <option value="Ready-to-move-in">Ready-to-move-in property</option>
+                                    <option value="Under-construction">Under-construction property</option>
+                                    <option value="Plot">Plot</option>
+                                    <option value="Resale">Resale</option>
+
+
                                   </select>
                                 </div>
                               </div>
@@ -181,6 +258,10 @@ function LoanForm() {
                                 <div>
                                   <label className="block text-sm text-gray-600 mb-1">Estimated Property Value</label>
                                   <input
+                                     value={formData1.estimated_property_value}
+                                     onChange={(e) =>
+                                       setFormData1({ ...formData1, estimated_property_value: e.target.value })
+                                     }
                                     type="text"
                                     placeholder="Please enter the estimated current market value of your property"
                                     className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:ring-orange-500 focus:border-orange-500"
@@ -189,6 +270,9 @@ function LoanForm() {
                                 <div>
                                   <label className="block text-sm text-gray-600 mb-1">Down Payment Completed?</label>
                                   <select
+                                      value={formData1.down_payment} // Ensure this binds to the correct state key
+                                      onChange={(e) =>
+                                        setFormData1({ ...formData1, down_payment: e.target.value })}
                                     className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:ring-orange-500 focus:border-orange-500"
                                   >
                                     <option value="" disabled selected>
@@ -205,25 +289,41 @@ function LoanForm() {
                                 <div>
                                   <label className="block text-sm text-gray-600 mb-1">Business Vintage</label>
                                   <select
+                                       value={formData1.business_vintage} // Ensure this binds to the correct state key
+                                       onChange={(e) =>
+                                         setFormData1({ ...formData1, business_vintage: e.target.value })}
                                     className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:ring-orange-500 focus:border-orange-500"
                                   >
                                     <option value="" disabled selected>
                                       Please select the age of your current business
                                     </option>
-                                    <option value="1-5 years">1-5 years</option>
-                                    <option value="5+ years">5+ years</option>
+                                    <option value="1-2 years">1-2 years</option>
+                                    <option value="3-5  years">3-5 years</option>
+                                    <option value="6-9  years">6-9 years</option>
+                                    <option value="10-14  years">10-14 years</option>
+                                    <option value="15-25  years">15-25 years</option>
+                                    <option value="25+ years">25+ years</option>
+
+
+
+
                                   </select>
                                 </div>
                                 <div>
                                   <label className="block text-sm text-gray-600 mb-1">Nature of Business</label>
                                   <select
+                                   value={formData1.nature_of_business} // Ensure this binds to the correct state key
+                                   onChange={(e) =>
+                                     setFormData1({ ...formData1, nature_of_business: e.target.value })}
                                     className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:ring-orange-500 focus:border-orange-500"
                                   >
                                     <option value="" disabled selected>
                                       Please select your business type
                                     </option>
-                                    <option value="retail">Retail</option>
-                                    <option value="services">Services</option>
+                                    <option value="Trader">Trader</option>
+                                    <option value="Manufacturer">Manufacturer</option>
+                                    <option value="Others">Others</option>
+
                                   </select>
                                 </div>
                               </div>
@@ -243,9 +343,12 @@ function LoanForm() {
                           <p className="text-sm text-gray-600 mt-6 text-center">
                             I authorise Bajaj Housing Finance Limited and its affiliates to contact me, overriding my registration for
                             DNC/NDNC, if any, and I have understood and agree with the{" "}
-                            <a href="#" className="text-orange-500 underline">
-                              Terms and Conditions
-                            </a>
+                            <span
+  className="text-orange-500 underline cursor-pointer"
+  onClick={() => window.open('/Privacy policy.pdf', '_blank')}
+>
+  Terms and Conditions
+</span>
                             .
                           </p>
                         </div>
@@ -286,17 +389,23 @@ function LoanForm() {
                       />
                     ))}
                 </div>
-                <p className="text-sm text-orange-500 text-center mt-4 cursor-pointer">
+                <p className="text-sm text-orange-500 text-center mt-4 cursor-pointer"
+                onClick={handleChangenumber}>
                   Change Mobile Number?
                 </p>
                 <p className="text-sm text-center mt-2">
-                  Didn’t receive OTP?{" "}
-                  <span className="text-blue-500 cursor-pointer">
-                    Resend OTP
-                  </span>
-                  <br />
-                  <span>in 51 Seconds</span>
-                </p>
+      Didn’t receive OTP?{" "}
+      <span
+        className={`cursor-pointer ${
+          isResendDisabled ? "text-gray-400" : "text-blue-500"
+        }`}
+        onClick={handleResendClick}
+      >
+        Resend OTP
+      </span>
+      <br />
+      {isResendDisabled && <span>in {countdown} Seconds</span>}
+    </p>
                 <div className="mt-4">
                   <label className="flex items-start text-xs sm:text-sm">
                     <input type="checkbox" className="h-4 w-4 text-blue-500 mt-1" />
@@ -304,9 +413,12 @@ function LoanForm() {
                       I authorise Bajaj Housing Finance Limited and its affiliates to contact me,
                       overriding my registration for DNC/NDNC, if any, and I have understood and
                       agree with the{" "}
-                      <span className="text-orange-500 underline cursor-pointer">
-                        Terms and Conditions
-                      </span>
+                      <span
+  className="text-orange-500 underline cursor-pointer"
+  onClick={() => window.open('/Privacy policy.pdf', '_blank')}
+>
+  Terms and Conditions
+</span>
                       .
                     </span>
                   </label>
@@ -490,9 +602,13 @@ function LoanForm() {
                 I authorise Bajaj Housing Finance Limited and its affiliates to contact me,
                 overriding my registration for DNC/NDNC, if any, and I have understood and agree
                 with the{" "}
-                <span className="text-orange-500 underline cursor-pointer">
-                  Terms and Conditions
-                </span>
+                <span
+  className="text-orange-500 underline cursor-pointer"
+  onClick={() => window.open('/Privacy policy.pdf', '_blank')}
+>
+  Terms and Conditions
+</span>
+
               </label>
             </div>
 
@@ -545,18 +661,20 @@ function LoanForm() {
                 <p className="ml-4 text-sm">Generate OTP</p>
               </div>
               {/* Step 3 */}
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <span
-                    className={`h-6 w-6 ${
-                      currentStep >= 3 ? "bg-green-500" : "border-2 border-white bg-blue-900"
-                    } rounded-full flex justify-center items-center text-white text-sm`}
-                  >
-                    3
-                  </span>
-                </div>
-                <p className="ml-4 text-sm">Review Loan Details</p>
-              </div>
+            {/* Step 3 */}
+<div className="flex items-center">
+  <div className="flex-shrink-0">
+    <span
+      className={`h-6 w-6 ${
+        currentStep >= 3 ? "bg-green-500" : "border-2 border-white bg-blue-900"
+      } rounded-full flex justify-center items-center text-white text-sm`}
+    >
+      {currentStep > 3 ? "✓" : currentStep === 3 ? "✓" : "3"}
+    </span>
+  </div>
+  <p className="ml-4 text-sm">Review Loan Details</p>
+</div>
+
             </div>
             </div>
       </div>
