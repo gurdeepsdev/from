@@ -41,12 +41,12 @@ function LoanForm() {
 
   console.log(formData1,"newdd")
   const [otp, setOtp] = useState("");
+
   const handlePhoneAuth = () => {
     setShowOTPForm(true);
     setCurrentStep(2); // Move to OTP step
-    // phoneAuth(formData.phone, "+91"); // Dynamic values
+    phoneAuth(formData.phone, "+91"); // Dynamic values
   };
-  console.log(formData.phone)
   const handleVerifyOTP = async (e) => {
     e.preventDefault();
     console.log("Calling verifyOTP...");
