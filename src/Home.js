@@ -153,7 +153,9 @@ const [isCheckboxSelected, setIsCheckboxSelected] = useState(false);
       isDownPaymentValid &&
       isBusinessVintageValid &&
       isNatureOfBusinessValid &&
-      isEstimatedPropertyValueValid
+      isEstimatedPropertyValueValid &&
+      isCheckboxSelected // Ensure checkbox is selected
+
     );
   };
   
@@ -592,7 +594,8 @@ const handleOTPSuccess = async (e) => {
     </p>
                 <div className="mt-4">
                   <label className="flex items-start text-xs sm:text-sm">
-                    <input type="checkbox" className="h-4 w-4 text-blue-500 mt-1" />
+                    <input type="checkbox" className="h-4 w-4 text-blue-500 mt-1"  checked={isCheckboxSelected}
+  onChange={(e) => setIsCheckboxSelected(e.target.checked)}/>
                     <span className="ml-2">
                       I authorise Orbits work and its affiliates to contact me,
                       overriding my registration for DNC/NDNC, if any, and I have understood and
