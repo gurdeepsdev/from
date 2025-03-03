@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes,Route } from 'react-router-dom';
 import Home from "./Home";
 import Thankyou from "./Thankyou";
+import Dform from "./Dform";
+
 
 
 function App() {
@@ -14,6 +16,9 @@ function App() {
       <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/Thankyou" element={<Thankyou />} />
+      <Route path="/Dform" element={<Dform />} />
+
+      
 
 
    
